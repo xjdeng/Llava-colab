@@ -41,7 +41,7 @@ class Llava:
     image_processor = vision_tower.image_processor
     self.model = model
     self.tokenizer = tokenizer
-    self.image_processor = image_proccesor
+    self.image_processor = image_processor
 
   def get_completion(self, image, prompt="Describe this image", systemprompt="", \
                      prefix = "Sure Thing! ", temperature = 0.01):
