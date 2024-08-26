@@ -82,12 +82,12 @@ class Llava:
   def captioner(self, image, prompt, temperature = 0.01, systemprompt=""):
       try:
           temperature = abs(float(temperature))
-      except ValueError:
+      except (TypeError, ValueError):
           temperature = 0.01
 
       try:
           prompt = str(prompt)
-      except ValueError:
+      except (TypeError, ValueError):
           prompt = "Caption this image"
       try:
           t0 = time.time()
