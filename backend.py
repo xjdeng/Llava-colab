@@ -103,6 +103,7 @@ class Llava:
     demo.launch(share=True, server_port=7860, debug = True, inline = False)
 
 if __name__ == "__main__":
+  print(sys.argv)
   lv = Llava(sys.argv[1])
   lv.gradio()
     
