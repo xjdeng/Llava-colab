@@ -46,6 +46,7 @@ class Llava:
 
   def get_completion(self, image, prompt="Describe this image", systemprompt="", \
                      prefix = "Sure Thing! ", temperature = 0.01):
+      tokenizer = self.tokenizer
       if not prompt:
           prompt = "Describe this image"
       disable_torch_init()
@@ -71,7 +72,7 @@ class Llava:
       with torch.inference_mode():
           output_ids = self.model.generate(input_ids, images=image_tensor, do_sample=True, temperature=temperature,
                                       max_new_tokens=1024, use_cache=True, stopping_criteria=[stopping_criteria])
-      outputs = self.tokenizer.decode(output_ids[0, input_ids.shape[1]:]).strip()
+      outputs = tokenizer.decode(output_ids[0, input_ids.shape[1]:]).strip()
       conv.messages[-1][-1] = outputs
       output = outputs.rsplit('</s>', 1)[0]
       # Ensure the output starts with "Sure thing!"
@@ -82,8 +83,12 @@ class Llava:
       try:
           temperature = abs(float(temperature))
       except ValueError:
-          print("Error")
           temperature = 0.01
+
+      try:
+          prompt = str(prompt)
+      except ValueError:
+          prompt = "Caption this image"
       try:
           t0 = time.time()
           result = self.get_completion(image, prompt, temperature=temperature, systemprompt=systemprompt)
